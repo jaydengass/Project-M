@@ -27,6 +27,8 @@ import { OnboardingExtensionPage } from "@/pages/onboarding/OnboardingExtension"
 import { OnboardingProxyPage } from "@/pages/onboarding/OnboardingProxy";
 import { RegisterPage } from "@/pages/Register";
 import { SupportPage } from "@/pages/Support";
+import { UnifiedHomePage } from "@/pages/UnifiedHomePage";
+import { UnifiedSearchPage } from "@/pages/UnifiedSearchPage";
 import { Layout } from "@/setup/Layout";
 import { useHistoryListener } from "@/stores/history";
 import { LanguageProvider } from "@/stores/language";
@@ -135,8 +137,11 @@ function App() {
               </LegacyUrlView>
             }
           />
+          {/* Unified content pages */}
+          <Route path="/" element={<UnifiedHomePage />} />
+          <Route path="/unified-search" element={<UnifiedSearchPage />} />
+          {/* Legacy routes */}
           <Route path="/browse/:query?" element={<HomePage />} />
-          <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/about" element={<AboutPage />} />
