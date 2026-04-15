@@ -39,14 +39,6 @@ const HIANIME_BASE = "https://api.consumet.org/anime/gogoanime";
 const JIKAN_BASE = "https://api.jikan.moe/v4";
 
 /**
- * Search anime on Hianime/GogoAnime
- * Note: Using Jikan instead due to CORS restrictions on consumet.org
- */
-async function searchHianime(query: string): Promise<AnimeSearchResult[]> {
-  return searchJikan(query);
-}
-
-/**
  * Search anime on Jikan (MyAnimeList API)
  */
 async function searchJikan(query: string): Promise<AnimeSearchResult[]> {
@@ -201,7 +193,9 @@ export async function getAnimeEpisodes(
  */
 export async function getRecentAnime(): Promise<AnimeSearchResult[]> {
   try {
-    const response = await fetch(`${JIKAN_BASE}/anime?order_by=start_date&sort=desc&limit=15`);
+    const response = await fetch(
+      `${JIKAN_BASE}/anime?order_by=start_date&sort=desc&limit=15`,
+    );
     if (!response.ok) throw new Error("Failed to fetch recent anime");
 
     const data = (await response.json()) as any;

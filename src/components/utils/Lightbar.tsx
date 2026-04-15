@@ -2,7 +2,8 @@ import { useEffect, useRef } from "react";
 import "./Lightbar.css";
 
 const BASE_URL = import.meta.env.BASE_URL || "";
-const lightbarImage = (filename: string) => `${BASE_URL}lightbar-images/${filename}`;
+const lightbarImage = (filename: string) =>
+  `${BASE_URL}lightbar-images/${filename}`;
 
 interface LightbarOptions {
   imgSrc?: string;
