@@ -40,27 +40,10 @@ const JIKAN_BASE = "https://api.jikan.moe/v4";
 
 /**
  * Search anime on Hianime/GogoAnime
+ * Note: Using Jikan instead due to CORS restrictions on consumet.org
  */
 async function searchHianime(query: string): Promise<AnimeSearchResult[]> {
-  try {
-    const response = await fetch(
-      `${HIANIME_BASE}/search?query=${encodeURIComponent(query)}`,
-    );
-    if (!response.ok) throw new Error("Hianime search failed");
-
-    const data = (await response.json()) as any;
-    return (data.results || []).map((item: any) => ({
-      id: item.id || item.url?.split("/").pop(),
-      title: item.title || item.name || "",
-      image: item.image || "",
-      rating: item.rating,
-      status: item.status,
-      source: "hianime",
-    }));
-  } catch (error) {
-    console.error("Hianime search error:", error);
-    return [];
-  }
+  return searchJikan(query);
 }
 
 /**
@@ -93,30 +76,10 @@ async function searchJikan(query: string): Promise<AnimeSearchResult[]> {
 }
 
 /**
- * Search anime by title using multiple sources
+ * Search anime by title using Jikan API (supports CORS)
  */
 export async function searchAnime(query: string): Promise<AnimeSearchResult[]> {
-  try {
-    const [hianimeResults, jikanResults] = await Promise.allSettled([
-      searchHianime(query),
-      searchJikan(query),
-    ]);
-
-    const results: AnimeSearchResult[] = [];
-
-    if (hianimeResults.status === "fulfilled") {
-      results.push(...hianimeResults.value.slice(0, 5));
-    }
-
-    if (jikanResults.status === "fulfilled") {
-      results.push(...jikanResults.value.slice(0, 5));
-    }
-
-    return results;
-  } catch (error) {
-    console.error("Error searching anime:", error);
-    return [];
-  }
+  return searchJikan(query);
 }
 
 /**
@@ -234,21 +197,21 @@ export async function getAnimeEpisodes(
 
 /**
  * Get recent anime
+ * Using Jikan API which supports CORS
  */
 export async function getRecentAnime(): Promise<AnimeSearchResult[]> {
   try {
-    const response = await fetch(
-      `${HIANIME_BASE}/recent-episodes?page=1&type=1`,
-    );
+    const response = await fetch(`${JIKAN_BASE}/anime?order_by=start_date&sort=desc&limit=15`);
     if (!response.ok) throw new Error("Failed to fetch recent anime");
 
     const data = (await response.json()) as any;
-    return (data.results || []).map((item: any) => ({
-      id: item.id,
+    return (data.data || []).map((item: any) => ({
+      id: item.mal_id?.toString(),
       title: item.title,
-      image: item.image,
-      source: "hianime",
-      status: "ongoing",
+      image: item.images?.jpg?.image_url,
+      rating: item.score,
+      status: item.status,
+      source: "jikan",
     }));
   } catch (error) {
     console.error("Error fetching recent anime:", error);

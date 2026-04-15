@@ -2,6 +2,8 @@ import { useEffect, useRef } from "react";
 
 import { useBannerStore } from "@/stores/banner";
 
+const BASE_URL = import.meta.env.BASE_URL || "/";
+
 export function useOnlineListener() {
   const updateOnline = useBannerStore((s) => s.updateOnline);
   const ref = useRef<boolean>(true);
@@ -21,7 +23,7 @@ export function useOnlineListener() {
       if (abort) abort.abort();
       abort = new AbortController();
       const signal = abort.signal;
-      fetch("/ping.txt", { signal })
+      fetch(`${BASE_URL}ping.txt`, { signal })
         .then(() => {
           updateOnline(true);
           ref.current = true;
