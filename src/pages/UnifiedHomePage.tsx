@@ -248,7 +248,7 @@ export function UnifiedHomePage() {
                       <SimpleMovieCard
                         key={movie.id}
                         movie={movie}
-                        onClick={() => navigate(`/movie/${movie.id}`)}
+                        onClick={() => navigate(`/media/${movie.id}`)}
                       />
                     ))}
                   </div>
@@ -266,7 +266,7 @@ export function UnifiedHomePage() {
                       <SimpleMovieCard
                         key={movie.id}
                         movie={movie}
-                        onClick={() => navigate(`/movie/${movie.id}`)}
+                        onClick={() => navigate(`/media/${movie.id}`)}
                       />
                     ))}
                   </div>
@@ -284,7 +284,7 @@ export function UnifiedHomePage() {
                       <SimpleMovieCard
                         key={tv.id}
                         movie={tv}
-                        onClick={() => navigate(`/tv/${tv.id}`)}
+                        onClick={() => navigate(`/media/${tv.id}`)}
                       />
                     ))}
                   </div>
@@ -302,7 +302,9 @@ export function UnifiedHomePage() {
                       <SimpleAnimeCard
                         key={anime.id}
                         anime={anime}
-                        onClick={() => navigate(`/anime/${anime.id}`)}
+                        onClick={() =>
+                          navigate(`/media/${anime.id}?type=anime`)
+                        }
                       />
                     ))}
                   </div>
@@ -320,7 +322,9 @@ export function UnifiedHomePage() {
                       <SimpleAnimeCard
                         key={anime.id}
                         anime={anime}
-                        onClick={() => navigate(`/anime/${anime.id}`)}
+                        onClick={() =>
+                          navigate(`/media/${anime.id}?type=anime`)
+                        }
                       />
                     ))}
                   </div>
